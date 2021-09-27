@@ -1,0 +1,52 @@
+{
+   "root": true,
+   "parser": "@typescript-eslint/parser",
+   "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+   },
+   "plugins": [
+      "@typescript-eslint"
+   ],
+   "rules": {
+      "@typescript-eslint/naming-convention": [
+         "warn",
+         {
+            "selector": "variable",
+            "format": [
+               "camelCase",
+               "PascalCase",
+               "UPPER_CASE"
+            ]
+         }
+      ],
+      "@typescript-eslint/semi": "warn",
+      "eqeqeq": "warn",
+      "no-throw-literal": "warn",
+      "eol-last": [
+         "warn",
+         "always"
+      ],
+      "indent": [
+         "warn",
+         3,
+         {
+            "SwitchCase": 1
+         }
+      ],
+      "multiline-comment-style": [
+         "warn",
+         "separate-lines"
+      ],
+      "no-array-constructor": "warn",
+      "no-trailing-spaces": "warn",
+      "quotes": [
+         "warn",
+         "single"
+      ],
+      "semi": "off"
+   },
+   "ignorePatterns": [
+      "**/*.d.ts"
+   ]
+}
