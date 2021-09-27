@@ -1,6 +1,6 @@
 {
-   "name": "extension-name",
-   "displayName": "Extension Name",
+   "name": "vscode-numworks",
+   "displayName": "VSCode Numworks",
    "description": "",
    "publisher": "k-kuroguro",
    "version": "0.0.1",
@@ -12,13 +12,13 @@
       "Other"
    ],
    "license": "MIT",
-   "homepage": "https://github.com/k-kuroguro/vscode-extension-template/blob/master/README.md",
+   "homepage": "https://github.com/k-kuroguro/vscode-numworks/blob/master/README.md",
    "repository": {
       "type": "git",
-      "url": "https://github.com/k-kuroguro/vscode-extension-template.git"
+      "url": "https://github.com/k-kuroguro/vscode-numworks.git"
    },
    "bugs": {
-      "url": "https://github.com/k-kuroguro/vscode-extension-template/issues"
+      "url": "https://github.com/k-kuroguro/vscode-numworks/issues"
    },
    "activationEvents": [
       "*"
