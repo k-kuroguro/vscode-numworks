@@ -1,12 +1,13 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
+import { extensionId } from '../../constants';
 
 suite('Extension Test Suite', () => {
    let extension: vscode.Extension<any>;
    const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
 
    suiteSetup(() => {
-      extension = vscode.extensions.getExtension('k-kuroguro.vscode-numworks') as vscode.Extension<any>;
+      extension = vscode.extensions.getExtension(extensionId) as vscode.Extension<any>;
    });
 
    test('Activation test', async () => {
