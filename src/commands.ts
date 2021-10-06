@@ -5,7 +5,7 @@ import { Server } from './server';
 
 const runSimulator = async (path: string) => {
    const sv = new Server(path);
-   sv.startServer();
+   sv.open();
    if (await window.showInformationMessage('open http://loclahost:3000 in chrome', 'open') === 'open') {
       open('http://localhost:3000', { app: { name: open.apps.chrome } });
    }

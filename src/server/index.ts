@@ -18,24 +18,21 @@ export class Server {
       });
    }
 
-   startServer() {
-
+   open() {
       if (!this.server) this.server = this.app.listen(this.port);
-
    };
 
-   closeServer(): Promise<void> {
-
-      return new Promise((res, rej) => {
+   close(): Promise<void> {
+      return new Promise((resolve, reject) => {
          if (this.server) {
             this.server.close(err => {
+               if (err) reject(err);
                this.server = undefined;
-               if (err) rej(err);
-               res();
+               resolve();
             });
          }
-         res();
+         resolve();
       });
-
    };
+
 }
