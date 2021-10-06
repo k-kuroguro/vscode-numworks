@@ -43,7 +43,7 @@ const config = {
       new copyPlugin({
          patterns: [
             {
-               context: path.resolve(__dirname, "src", "simulator"),
+               context: path.resolve(__dirname, "resources"),
                from: "**/*.(html|css|js|png)",
                to: path.resolve(__dirname, "dist")
             }
