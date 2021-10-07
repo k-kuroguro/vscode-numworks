@@ -1,17 +1,12 @@
 import * as express from 'express';
 import * as http from 'http';
-import * as path from 'path';
 
 export class Server {
 
    private app = express();
-   private port: number = 3000;
    private server?: http.Server;
-   private distPath: string;
 
-   constructor(extensionPath: string) {
-      this.distPath = path.join(extensionPath, 'dist');
-
+   constructor(private distPath: string, private port: number = 3000) {
       this.app.use(express.static(this.distPath));
       this.app.get('/', (_, res) => {
          res.sendFile('./simulator.html', { root: this.distPath });
