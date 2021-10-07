@@ -1,4 +1,4 @@
-import open = require('open');
+import * as open from 'open';
 import * as path from 'path';
 import { commands, Disposable, window } from 'vscode';
 import { extensionName } from '../constants';
