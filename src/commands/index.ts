@@ -3,15 +3,17 @@ import { commands, Disposable, window } from 'vscode';
 import { extensionName } from '../constants';
 import { Server } from '../server';
 
-const runSimulator = async (sv: Server) => {
+const runSimulator = async (sv: Server, pythonOnly: boolean = false) => {
    sv.open();
-   if (await window.showInformationMessage('Open http://loclahost:3000 in chrome', 'Open') === 'Open') {
-      open('http://localhost:3000', { app: { name: open.apps.chrome } });
-   }
+   //TODO: Do not ask again.
+   const url = `http://localhost:3000${pythonOnly ? '/python' : ''}`;
+   const result = await window.showInformationMessage(`Open ${url} in chrome`, 'Open');
+   if (result === 'Open') open(url, { app: { name: open.apps.chrome } });
 };
 
 export const registerCommands = (sv: Server): Disposable[] => {
    return [
-      commands.registerCommand(`${extensionName}.runSimulator`, () => runSimulator(sv))
+      commands.registerCommand(`${extensionName}.runSimulator`, () => runSimulator(sv)),
+      commands.registerCommand(`${extensionName}.runPythonSimulator`, () => runSimulator(sv, true))
    ];
 };

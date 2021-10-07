@@ -30,6 +30,11 @@
             "command": "vscode-numworks.runSimulator",
             "title": "Run Simulator",
             "category": "VSCode Numworks"
+         },
+         {
+            "command": "vscode-numworks.runPythonSimulator",
+            "title": "Run Python Simulator",
+            "category": "VSCode Numworks"
          }
       ]
    },
