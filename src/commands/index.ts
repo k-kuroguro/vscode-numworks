@@ -1,16 +1,16 @@
-import * as open from 'open';
-import { commands, Disposable, window } from 'vscode';
+import { commands, Disposable, Uri, window } from 'vscode';
 import { extensionName } from '../constants';
 import { Server } from '../server';
+import { SimulatorPanel } from '../webview';
 
-const openSimulator = async (sv: Server, pythonOnly: boolean = false) => {
+const openSimulator = async (extensionUri: Uri, sv: Server) => {
    if (!sv.isOpened()) sv.open();
-   open(`http://localhost:3000${pythonOnly ? '/python' : ''}`, { app: { name: open.apps.chrome } });
+   SimulatorPanel.createOrShow(extensionUri);
 };
 
-export const registerCommands = (sv: Server): Disposable[] => {
+export const registerCommands = (extensionUri: Uri, sv: Server): Disposable[] => {
    return [
-      commands.registerCommand(`${extensionName}.openSimulator`, () => openSimulator(sv)),
-      commands.registerCommand(`${extensionName}.openPythonSimulator`, () => openSimulator(sv, true))
+      commands.registerCommand(`${extensionName}.openSimulator`, () => openSimulator(extensionUri, sv)),
+      commands.registerCommand(`${extensionName}.openPythonSimulator`, () => /* TODO: python only wip */ openSimulator(extensionUri, sv))
    ];
 };

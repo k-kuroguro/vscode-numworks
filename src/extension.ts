@@ -7,13 +7,15 @@ import { Server } from './server';
 //TODO: setting
 //TODO: activation event
 //TODO: 書き込み 読み込み
+//TODO: リソース整理
+//TODO: Serializer
 
 export function activate(context: ExtensionContext) {
    const sv = new Server(path.join(context.extensionPath, 'dist'));
 
    context.subscriptions.push(
       sv,
-      ...registerCommands(sv)
+      ...registerCommands(context.extensionUri, sv)
    );
 }
 
