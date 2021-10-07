@@ -5,7 +5,8 @@ import { Server } from '../server';
 
 const runSimulator = async (sv: Server, pythonOnly: boolean = false) => {
    sv.open();
-   //TODO: Do not ask again.
+   //TODO: Do not ask again.\
+   //TODO: Open 切り出し
    const url = `http://localhost:3000${pythonOnly ? '/python' : ''}`;
    const result = await window.showInformationMessage(`Open ${url} in chrome`, 'Open');
    if (result === 'Open') open(url, { app: { name: open.apps.chrome } });
