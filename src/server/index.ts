@@ -8,9 +8,8 @@ export class Server {
 
    constructor(private distPath: string, private port: number = 3000) {
       this.app.use(express.static(this.distPath));
-      this.app.get('/', (_, res) => {
-         res.sendFile('./simulator.html', { root: this.distPath });
-      });
+      this.app.get('/', (_, res) => res.sendFile('./simulator.html', { root: this.distPath }));
+      this.app.get('/python', (_, res) => res.sendFile('./simulator-python.html', { root: this.distPath }));
    }
 
    isOpened(): boolean {

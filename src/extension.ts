@@ -4,7 +4,6 @@ import { registerCommands } from './commands';
 import { Server } from './server';
 
 //TODO: server port
-//TODO: python only or full sim
 //TODO: setting
 //TODO: activation event
 //TODO: 書き込み 読み込み

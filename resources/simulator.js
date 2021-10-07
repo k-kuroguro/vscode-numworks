@@ -1,11 +1,14 @@
 const screenElement = document.querySelector('canvas');
 
 const module = {
-   // arguments: ["--language", window.navigator.language.split('-')[0], "--code-script", name + ":" + code, "--code-lock-on-console"],
-   arguments: ['--language', window.navigator.language.split('-')[0], '--code-lock-on-console'],
+   arguments: ['--language', window.navigator.language.split('-')[0]],
    canvas: screenElement,
    keyboardListeningElement: screenElement
 };
+
+if (pythonOnly) {
+   module.arguments.push('--code-lock-on-console');
+}
 
 Epsilon(module);
 
