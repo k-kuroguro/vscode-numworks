@@ -13,8 +13,12 @@ export class Server {
       });
    }
 
-   open() {
-      if (!this.server) this.server = this.app.listen(this.port);
+   isOpened(): boolean {
+      return !!this.server;
+   }
+
+   open(): void {
+      if (!this.isOpened()) this.server = this.app.listen(this.port);
    };
 
    close(): Promise<void> {
@@ -29,5 +33,9 @@ export class Server {
          resolve();
       });
    };
+
+   dispose(): void {
+      this.close();
+   }
 
 }

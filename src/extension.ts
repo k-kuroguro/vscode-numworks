@@ -1,5 +1,7 @@
+import * as path from 'path';
 import { ExtensionContext } from 'vscode';
 import { registerCommands } from './commands';
+import { Server } from './server';
 
 //TODO: server port
 //TODO: python only or full sim
@@ -8,8 +10,11 @@ import { registerCommands } from './commands';
 //TODO: 書き込み 読み込み
 
 export function activate(context: ExtensionContext) {
+   const sv = new Server(path.join(context.extensionPath, 'dist'));
+
    context.subscriptions.push(
-      ...registerCommands(context.extensionPath)
+      sv,
+      ...registerCommands(sv)
    );
 }
 
