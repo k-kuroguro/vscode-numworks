@@ -3,6 +3,22 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { extensionName } from '../constants';
 
+export class Webview {
+
+   private readonly disposables: vscode.Disposable[] = [];
+
+   constructor(extensionUri: vscode.Uri) {
+      this.disposables.push(
+         SimulatorPanel.registerSerializer(extensionUri)
+      );
+   }
+
+   dispose(): void {
+      this.disposables.forEach(d => d.dispose());
+   }
+
+}
+
 export class SimulatorPanel {
 
    public static currentPanel?: SimulatorPanel;
@@ -73,6 +89,18 @@ export class SimulatorPanel {
          webview,
          extensionUri.fsPath
       );
+   }
+
+   static registerSerializer(extensionUri: vscode.Uri): vscode.Disposable {
+      if (vscode.window.registerWebviewPanelSerializer) {
+         return vscode.window.registerWebviewPanelSerializer(SimulatorPanel.viewType, {
+            async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel) {
+               webviewPanel.webview.options = SimulatorPanel.getWebviewOptions(extensionUri);
+               SimulatorPanel.revive(webviewPanel, extensionUri);
+            }
+         });
+      }
+      return { dispose: () => { } };
    }
 
    private replaceHtmlVars(html: string, webview: vscode.Webview, extensionPath: string): string {

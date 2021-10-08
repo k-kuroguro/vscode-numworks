@@ -1,4 +1,4 @@
-import { commands, Disposable, Uri, window } from 'vscode';
+import { commands, Disposable, Uri } from 'vscode';
 import { extensionName } from '../constants';
 import { Server } from '../server';
 import { SimulatorPanel } from '../webview';
