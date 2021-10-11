@@ -21,7 +21,8 @@
       "url": "https://github.com/k-kuroguro/vscode-numworks/issues"
    },
    "activationEvents": [
-      "*"
+      "onCommand:vscode-numworks.openSimulator",
+      "onWebviewPanel:vscode-numworks.simulator"
    ],
    "main": "./dist/extension.js",
    "contributes": {
