@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as ejs from 'ejs';
 import { extensionName } from '../constants';
 
 export class Webview {
@@ -79,15 +80,20 @@ export class SimulatorPanel {
       };
    }
 
-   private _update() {
-      this._panel.webview.html = this.getWebviewContent(this._panel.webview, this._extensionUri);
+   private async _update() {
+      this._panel.webview.html = await this.getWebviewContent(this._panel.webview, this._extensionUri);
    }
 
-   private getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
-      return this.replaceHtmlVars(
-         fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'webview', 'index.html')).toString('utf-8'),
-         webview,
-         extensionUri.fsPath
+   private async getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): Promise<string> {
+      return await ejs.renderFile(
+         path.join(extensionUri.fsPath, 'dist', 'webview', 'index.ejs'),
+         {
+            scriptNonce: this.getNonce(),
+            styleNonce: this.getNonce(),
+            cspSource: webview.cspSource,
+            distPath: webview.asWebviewUri(vscode.Uri.file(path.join(extensionUri.fsPath, 'dist', 'webview'))).toString(),
+            iframeSrc: 'http://localhost:3000'
+         }
       );
    }
 
@@ -101,14 +107,6 @@ export class SimulatorPanel {
          });
       }
       return { dispose: () => { } };
-   }
-
-   private replaceHtmlVars(html: string, webview: vscode.Webview, extensionPath: string): string {
-      return html
-         .replace(/\${scriptNonce}/g, this.getNonce())
-         .replace(/\${styleNonce}/g, this.getNonce())
-         .replace(/\${cspSource}/g, webview.cspSource)
-         .replace(/\${distPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist', 'webview'))).toString());
    }
 
    private getNonce() {
