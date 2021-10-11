@@ -12,18 +12,18 @@ if (pythonOnly) {
 
 Epsilon(module);
 
-document.querySelectorAll('#keyboard span').forEach(function (span) {
-   function eventHandler(keyHandler) {
+document.querySelectorAll('#keyboard span').forEach(span => {
+   const eventHandler = keyHandler => {
       return function (ev) {
-         var key = this.getAttribute('data-key');
+         const key = this.getAttribute('data-key');
          keyHandler(key);
          ev.preventDefault();
       };
-   }
-   ['touchstart', 'mousedown'].forEach(function (type) {
+   };
+   ['touchstart', 'mousedown'].forEach(type => {
       span.addEventListener(type, eventHandler(module._IonSimulatorKeyboardKeyDown));
    });
-   ['touchend', 'mouseup'].forEach(function (type) {
+   ['touchend', 'mouseup'].forEach(type => {
       span.addEventListener(type, eventHandler(module._IonSimulatorKeyboardKeyUp));
    });
 });

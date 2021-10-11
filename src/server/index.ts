@@ -1,15 +1,20 @@
 import * as express from 'express';
 import * as http from 'http';
+import * as path from 'path';
 
 export class Server {
 
    private app = express();
    private server?: http.Server;
 
-   constructor(private distPath: string, private port: number = 3000) {
-      this.app.use(express.static(this.distPath));
-      this.app.get('/', (_, res) => res.sendFile('./simulator.html', { root: this.distPath }));
-      this.app.get('/python', (_, res) => res.sendFile('./simulator-python.html', { root: this.distPath }));
+   constructor(distPath: string, private port: number = 3000) {
+      const root = path.join(distPath, 'simulator');
+
+      this.app.use(express.static(root));
+      this.app.set('view engine', 'ejs');
+      this.app.set('views', root);
+      this.app.get('/', (_, res) => res.render('./index.ejs', { pythonOnly: false }));
+      this.app.get('/python', (_, res) => res.render('./index.ejs', { pythonOnly: true }));
    }
 
    isOpened(): boolean {

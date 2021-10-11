@@ -75,7 +75,7 @@ export class SimulatorPanel {
    private static getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
       return {
          enableScripts: true,
-         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'dist')]
+         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'dist', 'webview')]
       };
    }
 
@@ -85,7 +85,7 @@ export class SimulatorPanel {
 
    private getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
       return this.replaceHtmlVars(
-         fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'webview.html')).toString('utf-8'),
+         fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'webview', 'index.html')).toString('utf-8'),
          webview,
          extensionUri.fsPath
       );
@@ -108,7 +108,7 @@ export class SimulatorPanel {
          .replace(/\${scriptNonce}/g, this.getNonce())
          .replace(/\${styleNonce}/g, this.getNonce())
          .replace(/\${cspSource}/g, webview.cspSource)
-         .replace(/\${distPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist'))).toString());
+         .replace(/\${distPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist', 'webview'))).toString());
    }
 
    private getNonce() {

@@ -10,6 +10,7 @@ import { Webview } from './webview';
 //TODO: 書き込み 読み込み
 //TODO: リソース整理
 //TODO: webview sv未起動時処理
+//TODO: res minify
 
 export function activate(context: ExtensionContext) {
    //TODO: Uri or Path 統一

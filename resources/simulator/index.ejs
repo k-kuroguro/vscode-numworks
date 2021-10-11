@@ -4,9 +4,10 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" type="text/css" href="./simulator.css">
-   <script defer>const pythonOnly = true;</script>
-   <script defer src="./epsilon-python.js"></script>
+   <link rel="stylesheet" type="text/css" href="./index.css">
+   <% const epsilonSrc = `./epsilon${pythonOnly ? '-python' : '' }.js`; %>
+   <script defer>const pythonOnly = <%= pythonOnly  %>;</script>
+   <script defer src="<%= epsilonSrc %>"></script>
    <script defer src="./simulator.js"></script>
 </head>
 
