@@ -30,11 +30,6 @@
             "command": "vscode-numworks.openSimulator",
             "title": "Open Simulator",
             "category": "VSCode Numworks"
-         },
-         {
-            "command": "vscode-numworks.openPythonSimulator",
-            "title": "Open Python Simulator",
-            "category": "VSCode Numworks"
          }
       ]
    },

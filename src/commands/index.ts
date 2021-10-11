@@ -10,7 +10,6 @@ const openSimulator = async (extensionUri: Uri, sv: Server) => {
 
 export const registerCommands = (extensionUri: Uri, sv: Server): Disposable[] => {
    return [
-      commands.registerCommand(`${extensionName}.openSimulator`, () => openSimulator(extensionUri, sv)),
-      commands.registerCommand(`${extensionName}.openPythonSimulator`, () => /* TODO: python only wip */ openSimulator(extensionUri, sv))
+      commands.registerCommand(`${extensionName}.openSimulator`, () => openSimulator(extensionUri, sv))
    ];
 };
