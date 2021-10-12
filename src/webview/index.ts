@@ -63,7 +63,7 @@ class SimulatorPanel {
       const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
 
       if (SimulatorPanel.currentPanel) {
-         SimulatorPanel.currentPanel.panel.reveal(column);
+         SimulatorPanel.currentPanel.panel.reveal();
          return;
       }
 
