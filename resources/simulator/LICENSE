@@ -1,7 +1,7 @@
 background.png is from https://github.com/Omega-Numworks/omega-numworks.github.io/blob/gh-pages/static/media/simulator-background.eecc65b3.png.
 epsilon-python.js is from https://github.com/Omega-Numworks/omega-numworks.github.io/tree/gh-pages/epsilon-python.js.
 epsilon.js is from https://github.com/Omega-Numworks/omega-numworks.github.io/tree/gh-pages/epsilon.js.
-simulator.ejs/.js/.css are modified from https://getomega.dev/simulator/run/full.
+index.ejs/.js/.css are modified from https://getomega.dev/simulator/run/full.
 
 Copyright (c) 2019, Maxime "M4x1m3" Friess, Quentin Guidée & The Omega Dev Team.
 Above files are released under the MIT license
