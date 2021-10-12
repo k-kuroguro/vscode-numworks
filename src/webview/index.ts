@@ -9,7 +9,8 @@ export class Webview {
 
    constructor(extensionUri: vscode.Uri) {
       this.disposables.push(
-         SimulatorPanel.registerSerializer(extensionUri)
+         SimulatorPanel.registerSerializer(extensionUri),
+         ...this.registerCommands(extensionUri)
       );
    }
 
@@ -17,9 +18,19 @@ export class Webview {
       this.disposables.forEach(d => d.dispose());
    }
 
+   registerCommands(extensionUri: vscode.Uri): vscode.Disposable[] {
+      return [
+         vscode.commands.registerCommand(`${extensionName}.runSimulator`, () => this.runSimulator(extensionUri))
+      ];
+   }
+
+   private runSimulator(extensionUri: vscode.Uri): void {
+      SimulatorPanel.createOrShow(extensionUri);
+   }
+
 }
 
-export class SimulatorPanel {
+class SimulatorPanel {
 
    public static currentPanel?: SimulatorPanel;
    public static readonly viewType = `${extensionName}.simulator`;
@@ -30,8 +41,6 @@ export class SimulatorPanel {
       private readonly panel: vscode.WebviewPanel,
       private readonly extensionUri: vscode.Uri
    ) {
-      this.extensionUri = extensionUri;
-
       this.update();
 
       this.panel.onDidDispose(() => this.dispose(), null, this.disposables);

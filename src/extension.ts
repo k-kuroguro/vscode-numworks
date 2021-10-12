@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
-import { registerCommands } from './commands';
 import { Server } from './server';
 import { Webview } from './webview';
 
@@ -13,8 +12,7 @@ export function activate(context: ExtensionContext) {
 
    context.subscriptions.push(
       sv,
-      new Webview(context.extensionUri),
-      ...registerCommands(context.extensionUri,)
+      new Webview(context.extensionUri)
    );
 }
 
