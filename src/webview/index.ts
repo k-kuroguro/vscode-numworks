@@ -24,37 +24,37 @@ export class SimulatorPanel {
    public static currentPanel?: SimulatorPanel;
    public static readonly viewType = `${extensionName}.simulator`;
 
-   private readonly _panel: vscode.WebviewPanel;
-   private readonly _extensionUri: vscode.Uri;
-   private _disposables: vscode.Disposable[] = [];
+   private disposables: vscode.Disposable[] = [];
 
-   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-      this._panel = panel;
-      this._extensionUri = extensionUri;
+   private constructor(
+      private readonly panel: vscode.WebviewPanel,
+      private readonly extensionUri: vscode.Uri
+   ) {
+      this.extensionUri = extensionUri;
 
-      this._update();
+      this.update();
 
-      this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-      this._panel.webview.onDidReceiveMessage(
+      this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
+      this.panel.webview.onDidReceiveMessage(
          message => { },
          undefined,
-         this._disposables
+         this.disposables
       );
    }
 
    dispose() {
       SimulatorPanel.currentPanel = undefined;
 
-      this._panel.dispose();
+      this.panel.dispose();
 
-      this._disposables.forEach(d => d.dispose());
+      this.disposables.forEach(d => d.dispose());
    }
 
    static createOrShow(extensionUri: vscode.Uri) {
       const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
 
       if (SimulatorPanel.currentPanel) {
-         SimulatorPanel.currentPanel._panel.reveal(column);
+         SimulatorPanel.currentPanel.panel.reveal(column);
          return;
       }
 
@@ -79,8 +79,8 @@ export class SimulatorPanel {
       };
    }
 
-   private async _update() {
-      this._panel.webview.html = await this.getWebviewContent(this._panel.webview, this._extensionUri);
+   private async update() {
+      this.panel.webview.html = await this.getWebviewContent(this.panel.webview, this.extensionUri);
    }
 
    private async getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): Promise<string> {
