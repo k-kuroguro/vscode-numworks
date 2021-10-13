@@ -4,6 +4,9 @@ import { Server } from './server';
 import { Webview } from './webview';
 
 //TODO: res minify
+//TODO: Url ハードコーディング
+//TODO: sim 最適化
+//TODO: webview上のショートかっと
 
 export function activate(context: ExtensionContext) {
    //TODO: Uri or Path 統一

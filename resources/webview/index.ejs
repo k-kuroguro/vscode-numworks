@@ -3,7 +3,7 @@
 
 <head>
    <meta http-equiv="Content-Security-Policy"
-      content="base-uri 'self'; object-src 'none'; frame-src <%= iframeSrc %> ; script-src <%= cspSource %> 'nonce-<%= scriptNonce %>'; style-src <%= cspSource %> 'nonce-<%= styleNonce %>'; default-src 'none';">
+      content="base-uri 'self'; object-src 'none'; frame-src <%= iframeHostSource %> ; script-src <%= cspSource %> 'nonce-<%= scriptNonce %>'; style-src <%= cspSource %> 'nonce-<%= styleNonce %>'; default-src 'none';">
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <script defer src="<%= distPath %>/index.js" nonce="<%= scriptNonce %>"></script>
@@ -11,7 +11,7 @@
 </head>
 
 <body>
-   <iframe src='<%= iframeSrc %>' sandbox="allow-scripts"></iframe>
+   <iframe src='<%= iframeSource %>' sandbox="allow-scripts"></iframe>
 </body>
 
 </html>

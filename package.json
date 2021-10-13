@@ -22,6 +22,7 @@
    },
    "activationEvents": [
       "onCommand:vscode-numworks.runSimulator",
+      "onCommand:vscode-numworks.runInSimulator",
       "onWebviewPanel:vscode-numworks.simulator"
    ],
    "main": "./dist/extension.js",
@@ -31,8 +32,29 @@
             "command": "vscode-numworks.runSimulator",
             "title": "Run Simulator",
             "category": "VSCode Numworks"
+         },
+         {
+            "command": "vscode-numworks.runInSimulator",
+            "title": "Run In Simulator",
+            "category": "VSCode Numworks",
+            "icon": "$(play)"
          }
-      ]
+      ],
+      "menus": {
+         "editor/title/run": [
+            {
+               "when": "resourceLangId == python",
+               "command": "vscode-numworks.runInSimulator",
+               "group": "navigation"
+            }
+         ],
+         "commandPalette": [
+            {
+               "when": "resourceLangId == python",
+               "command": "vscode-numworks.runInSimulator"
+            }
+         ]
+      }
    },
    "scripts": {
       "vscode:prepublish": "npm run webpack:prod",
@@ -71,6 +93,7 @@
    "dependencies": {
       "ejs": "^3.1.6",
       "express": "^4.17.1",
+      "fast-deep-equal": "^3.1.3",
       "node": "^16.4.0"
    }
 }
