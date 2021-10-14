@@ -10,10 +10,16 @@ type Script = {
    content: string
 };
 
+type PanelOptions = {
+   column: vscode.ViewColumn
+};
+
 type SimulatorOptions = {
    pythonOnly: boolean,
    scripts: Script[]
 };
+
+type Options = PanelOptions & SimulatorOptions;
 
 export class Webview {
 
@@ -34,21 +40,40 @@ export class Webview {
       return [
          vscode.commands.registerCommand(`${extensionName}.runSimulator`, () => this.runSimulator(extensionUri)),
          vscode.commands.registerCommand(`${extensionName}.runInSimulator`, (uri?: vscode.Uri) => {
-            const scripts: Script[] = [];
-
-            if (uri) {
-               const name = path.basename(uri.fsPath);
-               const content = fs.readFileSync(uri.fsPath).toString();
-               scripts.push({ name, content });
-            }
-
+            const scripts = uri
+               ? this.getScriptsFromUri(uri)
+               : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
             this.runSimulator(extensionUri, { pythonOnly: true, scripts });
+         }),
+         vscode.commands.registerCommand(`${extensionName}.runInSimulatorToTheSide`, (uri?: vscode.Uri) => {
+            const scripts = uri
+               ? this.getScriptsFromUri(uri)
+               : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
+            this.runSimulator(extensionUri, { pythonOnly: true, scripts, column: vscode.ViewColumn.Two });
          })
       ];
    }
 
-   private runSimulator(extensionUri: vscode.Uri, options?: Partial<SimulatorOptions>): void {
+   private runSimulator(extensionUri: vscode.Uri, options?: Partial<Options>): void {
       SimulatorPanel.createOrShow(extensionUri, options);
+   }
+
+   private getScriptsFromUri(uri: vscode.Uri): Script[] {
+      return [
+         {
+            name: path.basename(uri.fsPath),
+            content: fs.readFileSync(uri.fsPath).toString()
+         }
+      ];
+   }
+
+   private getScriptsFromEditor(editor: vscode.TextEditor): Script[] {
+      return [
+         {
+            name: path.basename(editor.document.fileName),
+            content: editor.document.getText()
+         }
+      ];
    }
 
 }
@@ -83,8 +108,8 @@ class SimulatorPanel {
       this.disposables.forEach(d => d.dispose());
    }
 
-   static createOrShow(extensionUri: vscode.Uri, options?: Partial<SimulatorOptions>) {
-      const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
+   static createOrShow(extensionUri: vscode.Uri, options?: Partial<Options>) {
+      const column = options?.column;
 
       const fullOptions: SimulatorOptions = { pythonOnly: false, scripts: [], ...options };
 
@@ -103,7 +128,7 @@ class SimulatorPanel {
             });
          }
 
-         SimulatorPanel.currentPanel.panel.reveal();
+         SimulatorPanel.currentPanel.panel.reveal(column);
          return;
       }
 

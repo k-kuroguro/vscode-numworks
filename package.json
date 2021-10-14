@@ -23,6 +23,7 @@
    "activationEvents": [
       "onCommand:vscode-numworks.runSimulator",
       "onCommand:vscode-numworks.runInSimulator",
+      "onCommand:vscode-numworks.runInSimulatorToTheSide",
       "onWebviewPanel:vscode-numworks.simulator"
    ],
    "main": "./dist/extension.js",
@@ -35,7 +36,13 @@
          },
          {
             "command": "vscode-numworks.runInSimulator",
-            "title": "Run In Simulator",
+            "title": "Run in Simulator",
+            "category": "VSCode Numworks",
+            "icon": "$(play)"
+         },
+         {
+            "command": "vscode-numworks.runInSimulatorToTheSide",
+            "title": "Run in Simulator to the Side",
             "category": "VSCode Numworks",
             "icon": "$(play)"
          }
@@ -44,7 +51,8 @@
          "editor/title/run": [
             {
                "when": "resourceLangId == python",
-               "command": "vscode-numworks.runInSimulator",
+               "command": "vscode-numworks.runInSimulatorToTheSide",
+               "alt": "vscode-numworks.runInSimulator",
                "group": "navigation"
             }
          ],
@@ -52,6 +60,10 @@
             {
                "when": "resourceLangId == python",
                "command": "vscode-numworks.runInSimulator"
+            },
+            {
+               "when": "resourceLangId == python",
+               "command": "vscode-numworks.runInSimulatorToTheSide"
             }
          ]
       }
