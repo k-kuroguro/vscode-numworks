@@ -44,7 +44,7 @@ const config = {
          patterns: [
             {
                context: path.resolve(__dirname, "resources"),
-               from: "**/*.(ejs|css|js|png)",
+               from: "**/*",
                to: path.resolve(__dirname, "dist")
             }
          ]

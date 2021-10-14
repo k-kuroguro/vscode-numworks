@@ -23,18 +23,17 @@ if (scriptNames.length && scriptContents.length) {
 
 Epsilon(module);
 
-document.querySelectorAll('#keyboard span').forEach(span => {
-   const eventHandler = keyHandler => {
-      return function (ev) {
-         const key = this.getAttribute('data-key');
-         keyHandler(key);
-         ev.preventDefault();
-      };
-   };
-   ['touchstart', 'mousedown'].forEach(type => {
-      span.addEventListener(type, eventHandler(module._IonSimulatorKeyboardKeyDown));
-   });
-   ['touchend', 'mouseup'].forEach(type => {
-      span.addEventListener(type, eventHandler(module._IonSimulatorKeyboardKeyUp));
-   });
+window.addEventListener('message', event => {
+   const message = event.data;
+   switch (message.command) {
+      case 'KeyDown':
+         module._IonSimulatorKeyboardKeyDown(message.key);
+         break;
+      case 'KeyUp':
+         module._IonSimulatorKeyboardKeyUp(message.key);
+         break;
+      case 'PropagateKeyboardEvent':
+         window.dispatchEvent(new KeyboardEvent(message.event.type, message.event));
+         break;
+   }
 });
