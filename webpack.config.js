@@ -3,7 +3,6 @@
 'use strict';
 
 const path = require('path');
-const copyPlugin = require("copy-webpack-plugin");
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -38,18 +37,7 @@ const config = {
             ]
          }
       ]
-   },
-   plugins: [
-      new copyPlugin({
-         patterns: [
-            {
-               context: path.resolve(__dirname, "resources"),
-               from: "(webview|simulator)/**/*",
-               to: path.resolve(__dirname, "dist")
-            }
-         ]
-      })
-   ]
+   }
 };
 
 module.exports = config;

@@ -151,7 +151,7 @@ class SimulatorPanel {
    private static getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
       return {
          enableScripts: true,
-         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'dist', 'webview')]
+         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'resources', 'webview')]
       };
    }
 
@@ -165,14 +165,14 @@ class SimulatorPanel {
          .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
          .join('&');
       return await ejs.renderFile(
-         path.join(extensionUri.fsPath, 'dist', 'webview', 'index.ejs'),
+         path.join(extensionUri.fsPath, 'resources', 'webview', 'index.ejs'),
          {
             scriptNonce: this.getNonce(),
             styleNonce: this.getNonce(),
             cspSource: webview.cspSource,
             iframeHostSource,
             iframeSource: iframeHostSource + (this.options.pythonOnly ? '/python' : '') + iframeSourceQuery,
-            distPath: webview.asWebviewUri(vscode.Uri.file(path.join(extensionUri.fsPath, 'dist', 'webview'))).toString()
+            resourcePath: webview.asWebviewUri(vscode.Uri.file(path.join(extensionUri.fsPath, 'resources', 'webview'))).toString()
          }
       );
    }

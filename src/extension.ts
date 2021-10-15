@@ -9,7 +9,7 @@ import { Webview } from './webview';
 
 export function activate(context: ExtensionContext) {
    //TODO: Uri or Path 統一
-   const sv = new Server(path.join(context.extensionPath, 'dist'));
+   const sv = new Server(path.join(context.extensionPath, 'resources', 'simulator'));
    sv.open();
 
    context.subscriptions.push(

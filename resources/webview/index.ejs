@@ -6,13 +6,13 @@
       content="base-uri 'self'; object-src 'none'; frame-src <%= iframeHostSource %> ; script-src <%= cspSource %> 'nonce-<%= scriptNonce %>'; style-src <%= cspSource %> 'nonce-<%= styleNonce %>'; img-src <%= cspSource %>; default-src 'none';">
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <script defer src="<%= distPath %>/index.js" nonce="<%= scriptNonce %>"></script>
-   <link href="<%= distPath %>/index.css" rel="stylesheet" nonce="<%= styleNonce %>">
+   <script defer src="<%= resourcePath %>/index.js" nonce="<%= scriptNonce %>"></script>
+   <link href="<%= resourcePath %>/index.css" rel="stylesheet" nonce="<%= styleNonce %>">
 </head>
 
 <body>
    <div class="calculator">
-      <img src="<%= distPath %>/background.png" alt="NumWorks Calculator">
+      <img src="<%= resourcePath %>/background.png" alt="NumWorks Calculator">
       <iframe src='<%= iframeSource %>' sandbox="allow-scripts"></iframe>
       <div id="iframe-cover"> </div>
       <div id="keyboard">

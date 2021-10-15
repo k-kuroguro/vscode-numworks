@@ -1,15 +1,12 @@
 import * as express from 'express';
 import * as http from 'http';
-import * as path from 'path';
 
 export class Server {
 
    private app = express();
    private server?: http.Server;
 
-   constructor(distPath: string, private port: number = 3000) {
-      const root = path.join(distPath, 'simulator');
-
+   constructor(root: string, private port: number = 3000) {
       this.app.use(express.static(root));
       this.app.set('view engine', 'ejs');
       this.app.set('views', root);
