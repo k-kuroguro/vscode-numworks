@@ -6,6 +6,9 @@ window.addEventListener('message', event => {
       case 'UpdateIframeSource':
          iframe.src = message.source;
          break;
+      case 'ReloadIframe':
+         iframe.src += '';
+         break;
    }
 });
 

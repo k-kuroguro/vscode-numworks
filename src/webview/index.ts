@@ -6,6 +6,7 @@ import * as equal from 'fast-deep-equal';
 import { extensionName } from '../constants';
 
 type Script = {
+   uri: vscode.Uri,
    name: string,
    content: string
 };
@@ -63,6 +64,7 @@ export class Webview {
    private getScriptsFromUri(uri: vscode.Uri): Script[] {
       return [
          {
+            uri,
             name: path.basename(uri.fsPath),
             content: fs.readFileSync(uri.fsPath).toString()
          }
@@ -72,6 +74,7 @@ export class Webview {
    private getScriptsFromEditor(editor: vscode.TextEditor): Script[] {
       return [
          {
+            uri: editor.document.uri,
             name: path.basename(editor.document.fileName),
             content: editor.document.getText()
          }
@@ -86,6 +89,7 @@ class SimulatorPanel {
    public static readonly viewType = `${extensionName}.simulator`;
 
    private disposables: vscode.Disposable[] = [];
+   private watchers: fs.FSWatcher[] = [];
 
    private constructor(
       private readonly panel: vscode.WebviewPanel,
@@ -94,11 +98,16 @@ class SimulatorPanel {
    ) {
       this.update();
 
-      this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
-      this.panel.webview.onDidReceiveMessage(
-         message => { },
-         undefined,
-         this.disposables
+      this.watchers = options.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
+
+      this.disposables.push(
+         this.panel.onDidDispose(() => {
+            this.dispose();
+            this.watchers.forEach(w => w.close());
+         }),
+         this.panel.webview.onDidReceiveMessage(
+            message => { }
+         )
       );
 
       this.panel.iconPath = vscode.Uri.joinPath(extensionUri, 'resources', 'icon', 'webview.svg');
@@ -130,6 +139,8 @@ class SimulatorPanel {
                command: 'UpdateIframeSource',
                source: 'http://localhost:3000' + (fullOptions.pythonOnly ? '/python' : '') + query,
             });
+            SimulatorPanel.currentPanel.watchers.forEach(w => w.close());
+            SimulatorPanel.currentPanel.watchers = fullOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
          }
          SimulatorPanel.currentPanel.panel.reveal(column);
          return;
@@ -188,6 +199,14 @@ class SimulatorPanel {
          });
       }
       return { dispose: () => { } };
+   }
+
+   private static reload() {
+      if (!SimulatorPanel.currentPanel) return;
+
+      SimulatorPanel.currentPanel.panel.webview.postMessage({
+         command: 'ReloadIframe'
+      });
    }
 
    private getNonce() {
