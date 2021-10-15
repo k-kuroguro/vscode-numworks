@@ -6,3 +6,10 @@ simulator/index.* and webview/index.* are modified from https://getomega.dev/sim
 Copyright (c) 2019, Maxime "M4x1m3" Friess, Quentin Guidée & The Omega Dev Team.
 Released under the MIT license
 https://opensource.org/licenses/mit-license.php
+
+=======================================================================
+
+icon/logo.svg and icon/webview.svg are modified from https://github.com/numworks/epsilon/blob/master/ion/src/simulator/assets/logo.svg.
+icon/logo.png is converted from icon/logo.svg.
+
+Released under a CC BY-NC-SA License.

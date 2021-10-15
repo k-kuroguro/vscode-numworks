@@ -4,7 +4,7 @@
    "description": "",
    "publisher": "k-kuroguro",
    "version": "0.0.1",
-   "icon": "resources/icon.png",
+   "icon": "resources/icon/logo.png",
    "engines": {
       "vscode": "^1.58.0"
    },
