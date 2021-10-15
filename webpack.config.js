@@ -44,7 +44,7 @@ const config = {
          patterns: [
             {
                context: path.resolve(__dirname, "resources"),
-               from: "**/*",
+               from: "(webview|simulator)/**/*",
                to: path.resolve(__dirname, "dist")
             }
          ]

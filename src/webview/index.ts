@@ -98,6 +98,8 @@ class SimulatorPanel {
          undefined,
          this.disposables
       );
+
+      this.panel.iconPath = vscode.Uri.joinPath(extensionUri, 'resources', 'icon', 'webview.svg');
    }
 
    dispose() {
