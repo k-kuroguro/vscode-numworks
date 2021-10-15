@@ -38,14 +38,16 @@ export class Webview {
 
    registerCommands(extensionUri: vscode.Uri): vscode.Disposable[] {
       return [
-         vscode.commands.registerCommand(`${extensionName}.runSimulator`, () => this.runSimulator(extensionUri)),
-         vscode.commands.registerCommand(`${extensionName}.runInSimulator`, (uri?: vscode.Uri) => {
+         vscode.commands.registerCommand(`${extensionName}.runSimulator`, () =>
+            this.runSimulator(extensionUri, { column: vscode.window.activeTextEditor?.viewColumn })
+         ),
+         vscode.commands.registerCommand(`${extensionName}.runPythonSimulator`, (uri?: vscode.Uri) => {
             const scripts = uri
                ? this.getScriptsFromUri(uri)
                : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
-            this.runSimulator(extensionUri, { pythonOnly: true, scripts });
+            this.runSimulator(extensionUri, { pythonOnly: true, scripts, column: vscode.window.activeTextEditor?.viewColumn });
          }),
-         vscode.commands.registerCommand(`${extensionName}.runInSimulatorToTheSide`, (uri?: vscode.Uri) => {
+         vscode.commands.registerCommand(`${extensionName}.runPythonSimulatorAtTheSide`, (uri?: vscode.Uri) => {
             const scripts = uri
                ? this.getScriptsFromUri(uri)
                : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
@@ -129,7 +131,6 @@ class SimulatorPanel {
                source: 'http://localhost:3000' + (fullOptions.pythonOnly ? '/python' : '') + query,
             });
          }
-
          SimulatorPanel.currentPanel.panel.reveal(column);
          return;
       }

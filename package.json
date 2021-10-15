@@ -22,8 +22,8 @@
    },
    "activationEvents": [
       "onCommand:numworks-simulator.runSimulator",
-      "onCommand:numworks-simulator.runInSimulator",
-      "onCommand:numworks-simulator.runInSimulatorToTheSide",
+      "onCommand:numworks-simulator.runPythonSimulator",
+      "onCommand:numworks-simulator.runPythonSimulatorAtTheSide",
       "onWebviewPanel:numworks-simulator.simulator"
    ],
    "main": "./dist/extension.js",
@@ -35,14 +35,14 @@
             "category": "Numworks Simulator"
          },
          {
-            "command": "numworks-simulator.runInSimulator",
-            "title": "Run in Simulator",
+            "command": "numworks-simulator.runPythonSimulator",
+            "title": "Run Python Simulator",
             "category": "Numworks Simulator",
             "icon": "$(play)"
          },
          {
-            "command": "numworks-simulator.runInSimulatorToTheSide",
-            "title": "Run in Simulator to the Side",
+            "command": "numworks-simulator.runPythonSimulatorAtTheSide",
+            "title": "Run Python Simulator at the Side",
             "category": "Numworks Simulator",
             "icon": "$(play)"
          }
@@ -51,19 +51,19 @@
          "editor/title/run": [
             {
                "when": "resourceLangId == python",
-               "command": "numworks-simulator.runInSimulatorToTheSide",
-               "alt": "numworks-simulator.runInSimulator",
+               "command": "numworks-simulator.runPythonSimulatorAtTheSide",
+               "alt": "numworks-simulator.runPythonSimulator",
                "group": "navigation"
             }
          ],
          "commandPalette": [
             {
                "when": "resourceLangId == python",
-               "command": "numworks-simulator.runInSimulator"
+               "command": "numworks-simulator.runPythonSimulator"
             },
             {
                "when": "resourceLangId == python",
-               "command": "numworks-simulator.runInSimulatorToTheSide"
+               "command": "numworks-simulator.runPythonSimulatorAtTheSide"
             }
          ]
       }
