@@ -131,7 +131,7 @@ class SimulatorPanel {
 
       if (SimulatorPanel.currentPanel) {
          const query = '?' + simulatorOptions.scripts
-            .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
+            .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
             .join('&');
          SimulatorPanel.currentPanel.panel.webview.postMessage({
             command: 'SetIframeSource',
@@ -177,7 +177,7 @@ class SimulatorPanel {
    private async getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): Promise<string> {
       const iframeHostSource = 'http://localhost:3000';
       const iframeSourceQuery = '?' + this.options.scripts
-         .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
+         .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
          .join('&');
       return await ejs.renderFile(
          path.join(extensionUri.fsPath, 'resources', 'webview', 'index.ejs'),
