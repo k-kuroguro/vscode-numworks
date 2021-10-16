@@ -123,25 +123,24 @@ class SimulatorPanel {
 
    static createOrShow(extensionUri: vscode.Uri, options?: Partial<Options>) {
       const column = options?.column;
-
-      const fullOptions: SimulatorOptions = { pythonOnly: false, scripts: [], ...options };
+      const simulatorOptions: SimulatorOptions = { pythonOnly: false, scripts: [], ...options };
 
       if (SimulatorPanel.currentPanel) {
-         if (
-            SimulatorPanel.currentPanel.options.pythonOnly !== fullOptions.pythonOnly
-            || !equal(SimulatorPanel.currentPanel.options.scripts, fullOptions.scripts)
-         ) {
-            SimulatorPanel.currentPanel.options = fullOptions;
-            const query = '?' + fullOptions.scripts
-               .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
-               .join('&');
-            SimulatorPanel.currentPanel.panel.webview.postMessage({
-               command: 'UpdateIframeSource',
-               source: 'http://localhost:3000' + (fullOptions.pythonOnly ? '/python' : '') + query,
-            });
+         const query = '?' + simulatorOptions.scripts
+            .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
+            .join('&');
+         SimulatorPanel.currentPanel.panel.webview.postMessage({
+            command: 'SetIframeSource',
+            source: 'http://localhost:3000' + (simulatorOptions.pythonOnly ? '/python' : '') + query,
+         });
+
+         if (!equal(SimulatorPanel.currentPanel.options.scripts, simulatorOptions.scripts)) {
             SimulatorPanel.currentPanel.watchers.forEach(w => w.close());
-            SimulatorPanel.currentPanel.watchers = fullOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
+            SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
          }
+
+         SimulatorPanel.currentPanel.options = simulatorOptions;
+
          SimulatorPanel.currentPanel.panel.reveal(column);
          return;
       }
@@ -153,7 +152,7 @@ class SimulatorPanel {
          SimulatorPanel.getWebviewOptions(extensionUri)
       );
 
-      SimulatorPanel.currentPanel = new SimulatorPanel(panel, extensionUri, fullOptions);
+      SimulatorPanel.currentPanel = new SimulatorPanel(panel, extensionUri, simulatorOptions);
    }
 
    private static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {

@@ -3,7 +3,7 @@ const iframe = document.querySelector('iframe');
 window.addEventListener('message', event => {
    const message = event.data;
    switch (message.command) {
-      case 'UpdateIframeSource':
+      case 'SetIframeSource':
          iframe.src = message.source;
          break;
       case 'ReloadIframe':
