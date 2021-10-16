@@ -28,7 +28,6 @@ export class Webview {
 
    constructor(extensionUri: vscode.Uri) {
       this.disposables.push(
-         SimulatorPanel.registerSerializer(extensionUri),
          ...this.registerCommands(extensionUri)
       );
    }
