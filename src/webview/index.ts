@@ -95,9 +95,10 @@ class SimulatorPanel {
       private readonly extensionUri: vscode.Uri,
       private options: SimulatorOptions
    ) {
-      this.update();
+      this.updateContent();
 
-      this.watchers = options.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.update()));
+      this.watchers = options.scripts.map(script =>
+         fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.updateIframe()));
 
       this.disposables.push(
          this.panel.onDidDispose(() => {
@@ -130,20 +131,15 @@ class SimulatorPanel {
       }
 
       if (SimulatorPanel.currentPanel) {
-         const query = '?' + simulatorOptions.scripts
-            .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
-            .join('&');
-         SimulatorPanel.currentPanel.panel.webview.postMessage({
-            command: 'SetIframeSource',
-            source: 'http://localhost:3000' + (simulatorOptions.pythonOnly ? '/python' : '') + query,
-         });
-
          if (!equal(SimulatorPanel.currentPanel.options.scripts, simulatorOptions.scripts)) {
             SimulatorPanel.currentPanel.watchers.forEach(w => w.close());
-            SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.update()));
+            SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script =>
+               fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.updateIframe()));
          }
 
          SimulatorPanel.currentPanel.options = simulatorOptions;
+
+         SimulatorPanel.currentPanel.updateIframe();
 
          SimulatorPanel.currentPanel.panel.reveal(column);
          return;
@@ -170,8 +166,18 @@ class SimulatorPanel {
       };
    }
 
-   private async update() {
+   private async updateContent() {
       this.panel.webview.html = await this.getWebviewContent(this.panel.webview, this.extensionUri);
+   }
+
+   private updateIframe() {
+      const query = '?' + this.options.scripts
+         .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
+         .join('&');
+      this.panel.webview.postMessage({
+         command: 'SetIframeSource',
+         source: 'http://localhost:3000' + (this.options.pythonOnly ? '/python' : '') + query,
+      });
    }
 
    private async getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): Promise<string> {
