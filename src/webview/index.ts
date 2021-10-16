@@ -97,7 +97,7 @@ class SimulatorPanel {
    ) {
       this.update();
 
-      this.watchers = options.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
+      this.watchers = options.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.update()));
 
       this.disposables.push(
          this.panel.onDidDispose(() => {
@@ -140,7 +140,7 @@ class SimulatorPanel {
 
          if (!equal(SimulatorPanel.currentPanel.options.scripts, simulatorOptions.scripts)) {
             SimulatorPanel.currentPanel.watchers.forEach(w => w.close());
-            SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.reload()));
+            SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script => fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.update()));
          }
 
          SimulatorPanel.currentPanel.options = simulatorOptions;
@@ -202,14 +202,6 @@ class SimulatorPanel {
          });
       }
       return { dispose: () => { } };
-   }
-
-   private static reload() {
-      if (!SimulatorPanel.currentPanel) return;
-
-      SimulatorPanel.currentPanel.panel.webview.postMessage({
-         command: 'ReloadIframe'
-      });
    }
 
    private getNonce() {
