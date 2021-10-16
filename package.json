@@ -3,7 +3,7 @@
    "displayName": "Numworks Simulator",
    "description": "This extension makes it possible to simulate numworks calculator in vscode.",
    "publisher": "k-kuroguro",
-   "version": "0.0.1",
+   "version": "1.0.0",
    "icon": "resources/icon/logo.png",
    "engines": {
       "vscode": "^1.58.0"
