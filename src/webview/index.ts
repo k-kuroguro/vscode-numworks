@@ -125,6 +125,11 @@ class SimulatorPanel {
       const column = options?.column;
       const simulatorOptions: SimulatorOptions = { pythonOnly: false, scripts: [], ...options };
 
+      // panel.reveal does not work well when change column to Two, so recreate panel.
+      if (column === vscode.ViewColumn.Two) {
+         SimulatorPanel.currentPanel?.panel.dispose();
+      }
+
       if (SimulatorPanel.currentPanel) {
          const query = '?' + simulatorOptions.scripts
             .map(script => `scriptName=${encodeURI(script.name)}&scriptContent=${encodeURI(script.content)}`)
