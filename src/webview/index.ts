@@ -22,6 +22,26 @@ type SimulatorOptions = {
 
 type Options = PanelOptions & SimulatorOptions;
 
+const getScriptsFromUri = (uri: vscode.Uri): Script[] => {
+   return [
+      {
+         uri,
+         name: path.basename(uri.fsPath),
+         content: fs.readFileSync(uri.fsPath).toString()
+      }
+   ];
+};
+
+const getScriptsFromEditor = (editor: vscode.TextEditor): Script[] => {
+   return [
+      {
+         uri: editor.document.uri,
+         name: path.basename(editor.document.fileName),
+         content: editor.document.getText()
+      }
+   ];
+};
+
 export class Webview {
 
    private readonly disposables: vscode.Disposable[] = [];
@@ -43,14 +63,14 @@ export class Webview {
          ),
          vscode.commands.registerCommand(`${extensionName}.runPythonSimulator`, (uri?: vscode.Uri) => {
             const scripts = uri
-               ? this.getScriptsFromUri(uri)
-               : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
+               ? getScriptsFromUri(uri)
+               : vscode.window.activeTextEditor ? getScriptsFromEditor(vscode.window.activeTextEditor) : [];
             this.runSimulator(extensionUri, { pythonOnly: true, scripts, column: vscode.window.activeTextEditor?.viewColumn });
          }),
          vscode.commands.registerCommand(`${extensionName}.runPythonSimulatorAtTheSide`, (uri?: vscode.Uri) => {
             const scripts = uri
-               ? this.getScriptsFromUri(uri)
-               : vscode.window.activeTextEditor ? this.getScriptsFromEditor(vscode.window.activeTextEditor) : [];
+               ? getScriptsFromUri(uri)
+               : vscode.window.activeTextEditor ? getScriptsFromEditor(vscode.window.activeTextEditor) : [];
             this.runSimulator(extensionUri, { pythonOnly: true, scripts, column: vscode.ViewColumn.Two });
          })
       ];
@@ -58,26 +78,6 @@ export class Webview {
 
    private runSimulator(extensionUri: vscode.Uri, options?: Partial<Options>): void {
       SimulatorPanel.createOrShow(extensionUri, options);
-   }
-
-   private getScriptsFromUri(uri: vscode.Uri): Script[] {
-      return [
-         {
-            uri,
-            name: path.basename(uri.fsPath),
-            content: fs.readFileSync(uri.fsPath).toString()
-         }
-      ];
-   }
-
-   private getScriptsFromEditor(editor: vscode.TextEditor): Script[] {
-      return [
-         {
-            uri: editor.document.uri,
-            name: path.basename(editor.document.fileName),
-            content: editor.document.getText()
-         }
-      ];
    }
 
 }
@@ -98,7 +98,10 @@ class SimulatorPanel {
       this.updateContent();
 
       this.watchers = options.scripts.map(script =>
-         fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.updateIframe()));
+         fs.watch(script.uri.fsPath, () => {
+            this.options.scripts = getScriptsFromUri(script.uri);
+            SimulatorPanel.currentPanel?.updateIframe();
+         }));
 
       this.disposables.push(
          this.panel.onDidDispose(() => {
@@ -134,7 +137,11 @@ class SimulatorPanel {
          if (!equal(SimulatorPanel.currentPanel.options.scripts, simulatorOptions.scripts)) {
             SimulatorPanel.currentPanel.watchers.forEach(w => w.close());
             SimulatorPanel.currentPanel.watchers = simulatorOptions.scripts.map(script =>
-               fs.watch(script.uri.fsPath, () => SimulatorPanel.currentPanel?.updateIframe()));
+               fs.watch(script.uri.fsPath, () => {
+                  if (!SimulatorPanel.currentPanel) return;
+                  SimulatorPanel.currentPanel.options.scripts = getScriptsFromUri(script.uri);
+                  SimulatorPanel.currentPanel.updateIframe();
+               }));
          }
 
          SimulatorPanel.currentPanel.options = simulatorOptions;
