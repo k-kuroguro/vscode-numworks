@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1.1]
+
+- Fix issue about watching scripts
+
 ## [1.1.0]
 
 - Activate extension when python file is opened.
