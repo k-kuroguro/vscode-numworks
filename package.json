@@ -21,6 +21,7 @@
       "url": "https://github.com/k-kuroguro/vscode-numworks/issues"
    },
    "activationEvents": [
+      "onLanguage:python",
       "onCommand:numworks-simulator.runSimulator",
       "onCommand:numworks-simulator.runPythonSimulator",
       "onCommand:numworks-simulator.runPythonSimulatorAtTheSide",
