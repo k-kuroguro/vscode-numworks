@@ -1,4 +1,4 @@
-# VSCode Numworks Simulator
+# Numworks Simulator
 
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/k-kuroguro.numworks-simulator.svg)](https://marketplace.visualstudio.com/items?itemName=k-kuroguro.numworks-simulator)
 [![CI Status](https://github.com/k-kuroguro/vscode-numworks/actions/workflows/main.yaml/badge.svg)](https://github.com/k-kuroguro/vscode-numworks/actions/workflows/main.yaml)
