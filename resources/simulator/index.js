@@ -1,27 +1,28 @@
-const screenElement = document.querySelector('canvas');
+const initialize = (scripts) => {
+   const screenElement = document.querySelector('canvas');
 
-const module = {
-   arguments: ['--language', window.navigator.language.split('-')[0]],
-   canvas: screenElement,
-   keyboardListeningElement: screenElement
-};
+   const module = {
+      arguments: ['--language', window.navigator.language.split('-')[0]],
+      canvas: screenElement,
+      keyboardListeningElement: screenElement
+   };
 
-if (pythonOnly) {
-   module.arguments.push('--code-lock-on-console');
-}
-
-const params = new URLSearchParams(window.location.search);
-const scriptNames = [...params.getAll('scriptName')];
-const scriptContents = [...params.getAll('scriptContent')];
-if (scriptNames.length && scriptContents.length) {
-   module.arguments.push('--code-wipe');
-   for (let i = 0; i < Math.min(scriptNames.length, scriptContents.length); i++) {
-      module.arguments.push('--code-script');
-      module.arguments.push(`${scriptNames[i]}:${scriptContents[i]}`);
+   if (pythonOnly) {
+      module.arguments.push('--code-lock-on-console');
    }
-}
 
-Epsilon(module);
+   const scriptNames = scripts.map(script => script.name);
+   const scriptContents = scripts.map(script => script.content);
+   if (scriptNames.length && scriptContents.length) {
+      module.arguments.push('--code-wipe');
+      for (let i = 0; i < scripts.length; i++) {
+         module.arguments.push('--code-script');
+         module.arguments.push(`${scriptNames[i]}:${scriptContents[i]}`);
+      }
+   }
+
+   Epsilon(module);
+};
 
 window.addEventListener('message', event => {
    const message = event.data;
@@ -34,6 +35,9 @@ window.addEventListener('message', event => {
          break;
       case 'PropagateKeyboardEvent':
          window.dispatchEvent(new KeyboardEvent(message.event.type, message.event));
+         break;
+      case 'Initialize':
+         initialize(message.scripts);
          break;
    }
 });

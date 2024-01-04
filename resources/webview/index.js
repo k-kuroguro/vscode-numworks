@@ -1,13 +1,41 @@
+const vscode = acquireVsCodeApi();
 const iframe = document.querySelector('iframe');
+let scripts = [];
+let isIframeLoaded = false;
+
+const initializeIframe = (scripts) => {
+   iframe.contentWindow.postMessage({
+      command: 'Initialize',
+      scripts
+   }, '*');
+}
+
+const requestScripts = () => {
+   vscode.postMessage({
+      command: 'RequestScripts'
+   }, '*');
+}
+
+iframe.onload = () => {
+   isIframeLoaded = true;
+   if (scripts && scripts.length) {
+      initializeIframe(scripts);
+   } else {
+      requestScripts();
+   }
+}
 
 window.addEventListener('message', event => {
    const message = event.data;
    switch (message.command) {
-      case 'SetIframeSource':
-         iframe.src = message.source;
-         break;
       case 'ReloadIframe':
          iframe.src += '';
+         break;
+      case 'SendScripts':
+         scripts = message.scripts;
+         if (isIframeLoaded) {
+            initializeIframe(scripts);
+         }
          break;
    }
 });

@@ -1,8 +1,8 @@
-import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as ejs from 'ejs';
 import * as equal from 'fast-deep-equal';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as vscode from 'vscode';
 import { extensionName } from '../constants';
 
 type Script = {
@@ -100,7 +100,7 @@ class SimulatorPanel {
       this.watchers = options.scripts.map(script =>
          fs.watch(script.uri.fsPath, () => {
             this.options.scripts = getScriptsFromUri(script.uri);
-            SimulatorPanel.currentPanel?.updateIframe();
+            SimulatorPanel.currentPanel?.updateContent();
          }));
 
       this.disposables.push(
@@ -109,7 +109,13 @@ class SimulatorPanel {
             this.watchers.forEach(w => w.close());
          }),
          this.panel.webview.onDidReceiveMessage(
-            message => { }
+            message => {
+               switch (message.command) {
+                  case "RequestScripts":
+                     this.sendScripts();
+                     break;
+               }
+            }
          )
       );
 
@@ -140,13 +146,13 @@ class SimulatorPanel {
                fs.watch(script.uri.fsPath, () => {
                   if (!SimulatorPanel.currentPanel) return;
                   SimulatorPanel.currentPanel.options.scripts = getScriptsFromUri(script.uri);
-                  SimulatorPanel.currentPanel.updateIframe();
+                  SimulatorPanel.currentPanel.updateContent();
                }));
          }
 
          SimulatorPanel.currentPanel.options = simulatorOptions;
 
-         SimulatorPanel.currentPanel.updateIframe();
+         SimulatorPanel.currentPanel.updateContent();
 
          SimulatorPanel.currentPanel.panel.reveal(column);
          return;
@@ -175,23 +181,11 @@ class SimulatorPanel {
 
    private async updateContent() {
       this.panel.webview.html = await this.getWebviewContent(this.panel.webview, this.extensionUri);
-   }
-
-   private updateIframe() {
-      const query = '?' + this.options.scripts
-         .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
-         .join('&');
-      this.panel.webview.postMessage({
-         command: 'SetIframeSource',
-         source: 'http://localhost:3000' + (this.options.pythonOnly ? '/python' : '') + query,
-      });
+      this.sendScripts();
    }
 
    private async getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): Promise<string> {
       const iframeHostSource = 'http://localhost:3000';
-      const iframeSourceQuery = '?' + this.options.scripts
-         .map(script => `scriptName=${encodeURIComponent(script.name)}&scriptContent=${encodeURIComponent(script.content)}`)
-         .join('&');
       return await ejs.renderFile(
          path.join(extensionUri.fsPath, 'resources', 'webview', 'index.ejs'),
          {
@@ -199,8 +193,8 @@ class SimulatorPanel {
             styleNonce: this.getNonce(),
             cspSource: webview.cspSource,
             iframeHostSource,
-            iframeSource: iframeHostSource + (this.options.pythonOnly ? '/python' : '') + iframeSourceQuery,
-            resourcePath: webview.asWebviewUri(vscode.Uri.file(path.join(extensionUri.fsPath, 'resources', 'webview'))).toString()
+            iframeSource: iframeHostSource + (this.options.pythonOnly ? '/python' : ''),
+            resourcePath: webview.asWebviewUri(vscode.Uri.file(path.join(extensionUri.fsPath, 'resources', 'webview'))).toString(),
          }
       );
    }
@@ -226,4 +220,10 @@ class SimulatorPanel {
       return text;
    }
 
+   private sendScripts() {
+      this.panel.webview.postMessage({
+         command: 'SendScripts',
+         scripts: this.options.scripts
+      });
+   }
 }
