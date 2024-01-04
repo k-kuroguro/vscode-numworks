@@ -1,8 +1,12 @@
 # Change Log
 
+## [1.1.2]
+
+- Fix issue with loading large file.
+
 ## [1.1.1]
 
-- Fix issue about watching scripts
+- Fix issue about watching scripts.
 
 ## [1.1.0]
 
