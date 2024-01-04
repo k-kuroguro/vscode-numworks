@@ -111,7 +111,7 @@ class SimulatorPanel {
          this.panel.webview.onDidReceiveMessage(
             message => {
                switch (message.command) {
-                  case "RequestScripts":
+                  case 'RequestScripts':
                      this.sendScripts();
                      break;
                }
