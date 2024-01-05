@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.0]
+
+- Use Upsilon instead of Omega as simulator OS.
+
 ## [1.2.0]
 
 - Add support for loading multiple scripts in the same directory.
