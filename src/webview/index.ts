@@ -3,6 +3,7 @@ import * as equal from 'fast-deep-equal';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { Config } from '../config';
 import { extensionName } from '../constants';
 
 type Script = {
@@ -22,25 +23,27 @@ type SimulatorOptions = {
 
 type Options = PanelOptions & SimulatorOptions;
 
+const config = Config.getInstance();
+const scriptExt = '.py';
+
+const uriToScript = (uri: vscode.Uri): Script => ({
+   uri,
+   name: path.basename(uri.fsPath),
+   content: fs.readFileSync(uri.fsPath).toString()
+});
+
 const getScriptsFromUri = (uri: vscode.Uri): Script[] => {
-   return [
-      {
-         uri,
-         name: path.basename(uri.fsPath),
-         content: fs.readFileSync(uri.fsPath).toString()
-      }
-   ];
+   if (!config.allowMultipleScripts) return [uriToScript(uri)];
+
+   const parent = vscode.Uri.joinPath(uri, '..');
+   const scriptUris = fs.readdirSync(parent.fsPath)
+      .filter(f => path.extname(f) === scriptExt)
+      .sort()
+      .map(f => vscode.Uri.joinPath(parent, f));
+   return scriptUris.map(uriToScript);
 };
 
-const getScriptsFromEditor = (editor: vscode.TextEditor): Script[] => {
-   return [
-      {
-         uri: editor.document.uri,
-         name: path.basename(editor.document.fileName),
-         content: editor.document.getText()
-      }
-   ];
-};
+const getScriptsFromEditor = (editor: vscode.TextEditor): Script[] => getScriptsFromUri(editor.document.uri);
 
 export class Webview {
 

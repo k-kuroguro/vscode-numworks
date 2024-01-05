@@ -67,6 +67,17 @@
                "command": "numworks-simulator.runPythonSimulatorAtTheSide"
             }
          ]
+      },
+      "configuration": {
+         "type": "object",
+         "title": "Numworks Simulator",
+         "properties": {
+            "numworks-simulator.allowMultipleScripts": {
+               "type": "boolean",
+               "default": false,
+               "description": "Controls whether to load all sibling scripts in the same directory."
+            }
+         }
       }
    },
    "scripts": {
