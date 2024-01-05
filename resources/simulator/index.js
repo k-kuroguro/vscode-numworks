@@ -9,6 +9,8 @@ const initialize = (scripts) => {
 
    if (pythonOnly) {
       module.arguments.push('--code-lock-on-console');
+      module.arguments.push('--open-app');
+      module.arguments.push('code');
    }
 
    const scriptNames = scripts.map(script => script.name);
@@ -22,20 +24,27 @@ const initialize = (scripts) => {
    }
 
    Epsilon(module);
+
+   window.addEventListener('message', event => {
+      const message = event.data;
+      switch (message.command) {
+         case 'KeyDown':
+            module._IonSimulatorKeyboardKeyDown(message.key);
+            break;
+         case 'KeyUp':
+            module._IonSimulatorKeyboardKeyUp(message.key);
+            break;
+         case 'PropagateKeyboardEvent':
+            window.dispatchEvent(new KeyboardEvent(message.event.type, message.event));
+            break;
+      }
+   });
 };
+
 
 window.addEventListener('message', event => {
    const message = event.data;
    switch (message.command) {
-      case 'KeyDown':
-         module._IonSimulatorKeyboardKeyDown(message.key);
-         break;
-      case 'KeyUp':
-         module._IonSimulatorKeyboardKeyUp(message.key);
-         break;
-      case 'PropagateKeyboardEvent':
-         window.dispatchEvent(new KeyboardEvent(message.event.type, message.event));
-         break;
       case 'Initialize':
          initialize(message.scripts);
          break;

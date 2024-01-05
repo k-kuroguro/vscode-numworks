@@ -1,6 +1,5 @@
-webview/background.png is from https://github.com/Omega-Numworks/omega-numworks.github.io/blob/gh-pages/static/media/simulator-background.eecc65b3.png.
-simulator/epsilon-python.js is from https://github.com/Omega-Numworks/omega-numworks.github.io/tree/gh-pages/epsilon-python.js.
-simulator/epsilon.js is from https://github.com/Omega-Numworks/omega-numworks.github.io/tree/gh-pages/epsilon.js.
+webview/background.webp is from https://raw.githubusercontent.com/UpsilonNumworks/Upsilon-website/master/public/simulator/background.light.webp.
+simulator/epsilon.js is built from Upsilon's source code (https://github.com/UpsilonNumworks/Upsilon).
 simulator/index.* and webview/index.* are modified from https://getomega.dev/simulator/run/full.
 
 Copyright (c) 2019, Maxime "M4x1m3" Friess, Quentin Guidée & The Omega Dev Team.
