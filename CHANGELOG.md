@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.0]
+
+- Add support for loading multiple scripts in the same directory.
+- Add `allowMultipleScripts` setting.
+
 ## [1.1.2]
 
 - Fix issue with loading large file.

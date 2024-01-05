@@ -26,4 +26,9 @@ Note: This command doesn't load any script.
  1. Open python file.
  2. Execute `Numworks Simulator: Run Python Simulator` or `Numworks Simulator: Run Python Simulator at the Side` or click run button in editor title menu.
 
-Note: Now, simulator loads only one opened script. If you import except standard library in it, it won't work well.
+Note: If you need to import from other scripts, make sure to set `allowMultipleScripts` to true. This enables loading sibling scripts as well.
+
+# Settings
+| Name                                      | Description                                                     | type    | default |
+| ----------------------------------------- | --------------------------------------------------------------- | ------- | ------- |
+| `numworks-simulator.allowMultipleScripts` | Control whether to load all sibling scripts of the open script. | boolean | false   |
