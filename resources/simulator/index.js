@@ -8,9 +8,9 @@ const initialize = (scripts) => {
    };
 
    if (pythonOnly) {
-      module.arguments.push('--code-lock-on-console');
       module.arguments.push('--open-app');
       module.arguments.push('code');
+      module.arguments.push('--code-lock-on-console');
    }
 
    const scriptNames = scripts.map(script => script.name);
