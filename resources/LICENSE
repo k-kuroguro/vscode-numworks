@@ -1,5 +1,10 @@
-webview/background.webp is from https://raw.githubusercontent.com/UpsilonNumworks/Upsilon-website/master/public/simulator/background.light.webp.
+webview/background.png is modified from background.jpg that was built from Upsilon's source code (https://github.com/UpsilonNumworks/Upsilon).
 simulator/epsilon.js is built from Upsilon's source code (https://github.com/UpsilonNumworks/Upsilon).
+
+Released under a CC BY-NC-SA License.
+
+=======================================================================
+
 simulator/index.* and webview/index.* are modified from https://getomega.dev/simulator/run/full.
 
 Copyright (c) 2019, Maxime "M4x1m3" Friess, Quentin Guidée & The Omega Dev Team.
