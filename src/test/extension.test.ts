@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { extensionId } from '../../constants';
+import { extensionId } from '../constants';
 
 suite('Extension Test Suite', () => {
    let extension: vscode.Extension<any>;
