@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.2]
+
+- Fix wrong CI badge link.
+
 ## [1.3.1]
 
 - Update the VSCode version.
