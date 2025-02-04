@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.1]
+
+- Update the VSCode version.
+- Update dependencies.
+- Also publish to Open VSX Registry.
+
 ## [1.3.0]
 
 - Use Upsilon instead of Omega as simulator OS.
